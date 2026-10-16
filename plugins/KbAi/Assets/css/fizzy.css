@@ -1,0 +1,492 @@
+/* ---------------------------------------------------------------------------
+   Claymorphism theme for Kanboard (LIGHT ONLY).
+   Modern soft-clay surfaces: large radius, pastel fills (never pure white),
+   three-shadows-in-one-declaration, GPU-friendly squash micro-interactions.
+   Loaded via template:layout:css hook AFTER core CSS so overrides win.
+   Remove the plugin to return to stock Kanboard.
+---------------------------------------------------------------------------- */
+
+/* Force native controls/scrollbars to light chrome over the light layout. */
+html { color-scheme: light; }
+
+:root {
+    /* ---- Clay canvas: soft, low-saturation neutrals ---- */
+    --clay-bg:              #f0eef4;   /* page; faint cool lavender          */
+    --clay-bg-deep:         #e7e4ee;   /* header / panel / inset surfaces     */
+    --clay-surface:         #f6f4f9;   /* cards / inputs / raised surfaces   */
+    --clay-surface-2:        #fcfbfe;   /* brightest raised face (top bevel)  */
+    --clay-ink:             #2b2b35;   /* near-black text                    */
+    --clay-ink-soft:        #5d5b6b;   /* secondary text                     */
+    --clay-ink-muted:       #8a879a;   /* tertiary / placeholder             */
+    --clay-line:            #dcd9e4;   /* subtle hairlines / borders          */
+    --clay-blue:            #7a6ff0;   /* primary action (soft violet)        */
+    --clay-blue-deep:       #5949e0;   /* primary hover / pressed            */
+    --clay-green:           #6fcf97;   /* status accents                      */
+    --clay-yellow:         #a87b00;   /* readable amber on light            */
+    --clay-red:            #e5484d;
+    --clay-aqua:            #56c0d8;
+    --clay-pink:            #e08ac2;
+
+    /* ---- Clay shadow recipe ----
+       1. outer drop: floats the element off the page (colored, diffused)
+       2. inset dark, offset UP from bottom: the underside curve
+       3. inset light, offset DOWN from top: the highlight / top bevel         */
+    --clay-shadow-card:
+        0 24px 40px -18px rgba(90, 70, 130, 0.30),
+        inset 0 -6px 12px rgba(85, 70, 130, 0.16),
+        inset 0 6px 12px rgba(255, 255, 255, 0.6);
+    --clay-shadow-button:
+        0 10px 18px -8px rgba(90, 70, 130, 0.32),
+        inset 0 -4px 8px rgba(85, 70, 130, 0.22),
+        inset 0 4px 8px rgba(255, 255, 255, 0.65);
+    --clay-shadow-input:
+        inset 0 4px 8px rgba(85, 70, 130, 0.12),
+        inset 0 -2px 4px rgba(255, 255, 255, 0.5),
+        0 2px 6px rgba(90, 70, 130, 0.10);
+
+    /* ---- map clay tokens onto Kanboard's variable names ---- */
+    --body-background-color: var(--clay-bg);
+    --header-background-color: var(--clay-bg-deep);
+
+    --color-primary: var(--clay-ink);
+    --color-light: var(--clay-ink-soft);
+    --color-lighter: var(--clay-line);
+    --color-dark: var(--clay-ink);
+    --color-medium: var(--clay-ink-soft);
+    --color-error: var(--clay-red);
+
+    --link-color-primary: var(--clay-blue);
+    --link-color-hover: var(--clay-blue-deep);
+    --link-color-focus: var(--clay-blue-deep);
+
+    --alert-background-color-info: #e9e6fc;
+    --alert-background-color-success: #e2f5ea;
+    --alert-background-color-error: #fdecee;
+    --alert-background-color-warning: #fdf3e0;
+    --alert-color-info: var(--clay-blue);
+    --alert-color-success: #2e8b5d;
+    --alert-color-error: var(--clay-red);
+
+    --table-header-background-color: var(--clay-bg-deep);
+    --table-nth-background-color: var(--clay-surface);
+    --table-border-color: var(--clay-line);
+
+    --sidebar-border-color: var(--clay-line);
+
+    --dropdown-background-color: var(--clay-surface);
+    --dropdown-border-color: var(--clay-line);
+    --dropdown-li-border-color: var(--clay-bg-deep);
+
+    --input-background-color: var(--clay-surface);
+    --input-border-color: var(--clay-line);
+    --input-focus-border-color: var(--clay-blue);
+    --input-focus-shadow-color: rgba(122, 111, 240, 0.30);
+    --input-focus-color: var(--clay-ink);
+
+    --panel-background-color: var(--clay-surface);
+    --panel-border-color: var(--clay-line);
+
+    --comment-nth-background-color: var(--clay-surface);
+    --comment-title-border-color: var(--clay-line);
+
+    --task-list-icons-color: var(--clay-ink-muted);
+
+    /* buttons (clay, soft) */
+    --button-primary-background-color: var(--clay-blue);
+    --button-primary-border-color: var(--clay-blue);
+    --button-primary-color: #ffffff;
+    --button-primary-background-color-focus: var(--clay-blue-deep);
+    --button-primary-border-color-focus: var(--clay-blue-deep);
+    --button-default-background-color: var(--clay-surface-2);
+    --button-default-border-color: var(--clay-line);
+    --button-default-color: var(--clay-ink);
+    --button-default-background-color-focus: var(--clay-surface);
+    --button-default-border-color-focus: var(--clay-blue);
+    --button-danger-background-color: var(--clay-red);
+    --button-danger-border-color: var(--clay-red);
+    --button-danger-color: #ffffff;
+    --button-danger-background-color-focus: #cc3b40;
+    --button-danger-border-color-focus: #cc3b40;
+
+    --form-help-color: var(--clay-ink-soft);
+    --form-error-color: var(--clay-red);
+}
+
+/* ---- body: soft type, generous leading ---- */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+        Helvetica, Arial, sans-serif;
+    letter-spacing: -0.01em;
+    line-height: 1.55;
+    color: var(--clay-ink);
+    -webkit-font-smoothing: antialiased;
+    background-color: var(--clay-bg);
+}
+
+/* ---------------------------------------------------------------------------
+   BUTTONS — squishy clay pills
+---------------------------------------------------------------------------- */
+.btn, .btn-blue, .btn-default, .btn-red, button[type="submit"],
+.form-actions button {
+    border-radius: 999px !important;      /* full pill */
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    border: 1px solid transparent;
+    box-shadow: var(--clay-shadow-button);
+    transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+    will-change: transform;               /* GPU compositor only */
+}
+.btn:hover, .btn-blue:hover, button[type="submit"]:hover {
+    transform: translateY(-1px);
+}
+.btn:active, .btn-blue:active, button[type="submit"]:active {
+    transform: translateY(2px) scale(0.98);   /* squish: squash, not animate shadows */
+}
+.btn-blue, button[type="submit"].btn-blue {
+    background: var(--clay-blue);
+    color: #fff;
+}
+.btn-blue:hover { background: var(--clay-blue-deep); }
+.btn-default, .btn:not(.btn-blue):not(.btn-red) {
+    background: var(--clay-surface-2);
+    color: var(--clay-ink);
+}
+.btn-default:hover {
+    background: var(--clay-surface);
+    color: var(--clay-ink);
+}
+.btn-red { background: var(--clay-red); color: #fff; }
+
+/* Focus ring: never let clay's soft look eat accessibility */
+.btn:focus-visible, button[type="submit"]:focus-visible {
+    outline: 3px solid var(--clay-blue);
+    outline-offset: 3px;
+}
+
+/* ---------------------------------------------------------------------------
+   HEADER — clay slab with soft drop
+---------------------------------------------------------------------------- */
+header {
+    background: var(--clay-bg-deep);
+    box-shadow:
+        0 14px 28px -18px rgba(90, 70, 130, 0.35),
+        inset 0 -4px 8px rgba(85, 70, 130, 0.10),
+        inset 0 4px 8px rgba(255, 255, 255, 0.5);
+    border-bottom: none;
+}
+
+/* ---------------------------------------------------------------------------
+   BOARD — column wells as soft clay trays, cards as plush clay pieces
+---------------------------------------------------------------------------- */
+#board td.board-column-,
+#board td[class*="board-column"] {
+    background: transparent;
+}
+/* Column header chip */
+#board th.board-column-header {
+    background: transparent;
+    border: none;
+}
+#board th.board-column-header .board-column-title {
+    background: var(--clay-surface-2);
+    border-radius: 999px;
+    padding: 6px 14px;
+    color: var(--clay-ink);
+    box-shadow: var(--clay-shadow-button);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+}
+#board th.board-column-header .board-column-header-task-count,
+#board th.board-column-header .pull-right {
+    color: var(--clay-ink-soft);
+    font-weight: 500;
+}
+/* The task drop-well: a recessed clay tray */
+.board-task-list {
+    margin: 6px;
+    padding: 10px;
+    border-radius: 28px;
+    background: var(--clay-bg-deep);
+    box-shadow:
+        inset 0 5px 10px rgba(85, 70, 130, 0.12),
+        inset 0 -3px 6px rgba(255, 255, 255, 0.45);
+    min-height: 60px;
+}
+
+/* Board cards: plush clay pieces in their color */
+.task-board {
+    border-radius: 26px;                  /* big inflated radius */
+    border: none;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    box-shadow: var(--clay-shadow-card);
+    color: var(--clay-ink);
+    word-wrap: break-word;
+    transition: transform 150ms ease, box-shadow 150ms ease;
+    will-change: transform;
+    position: relative;
+}
+/* Keep per-task colors (Kanboard sets .color-x background). The clay shadow
+   stack sits above it; ensure the top-bevel reads via a soft inner glow. */
+.task-board:before {                         /* top bevel highlight */
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 6px 10px rgba(255, 255, 255, 0.55),
+                inset 0 -5px 9px rgba(80, 60, 120, 0.10);
+    pointer-events: none;
+}
+.task-board:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 32px 54px -20px rgba(90, 70, 130, 0.40),
+        inset 0 -6px 12px rgba(85, 70, 130, 0.16),
+        inset 0 6px 12px rgba(255, 255, 255, 0.6);
+}
+.task-board a, .task-board-title a { color: var(--clay-ink); }
+.task-board-title a:hover { text-decoration: underline; }
+
+/* Task summary / details view: clay panel */
+.task-summary-container {
+    border-radius: 28px;
+    border: none;
+    box-shadow: var(--clay-shadow-card);
+    background: var(--clay-surface-2);
+    color: var(--clay-ink);
+    padding: 18px 20px;
+}
+.task-summary-column { color: var(--clay-ink); }
+.task-summary-column span { color: var(--clay-ink-soft); }
+.task-summary-container h2 { color: var(--clay-ink); }
+
+/* ---------------------------------------------------------------------------
+   CARDS / PANELS / TABLES — soft clay
+---------------------------------------------------------------------------- */
+.panel {
+    border-radius: 20px;
+    border: none;
+    background: var(--clay-surface-2);
+    box-shadow: var(--clay-shadow-card);
+    color: var(--clay-ink);
+}
+.table, table.table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px -12px rgba(90, 70, 130, 0.25),
+        inset 0 1px 0 rgba(255,255,255,0.5);
+}
+.table thead th, table.table th {
+    background: var(--clay-bg-deep);
+    color: var(--clay-ink);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+/* Comments: clay bubbles */
+.comment {
+    border-radius: 20px;
+    background: var(--clay-surface-2);
+    box-shadow: var(--clay-shadow-card);
+    padding: 14px 16px;
+    margin-bottom: 14px;
+}
+.comment-title { border-bottom: 1px solid var(--clay-line); }
+
+/* ---------------------------------------------------------------------------
+   INPUTS — recessed clay wells with soft focus ring
+---------------------------------------------------------------------------- */
+input[type="text"], input[type="password"], input[type="email"],
+input[type="number"], input[type="search"], input[type="date"], textarea, select {
+    border-radius: 16px;
+    border-color: var(--clay-line);
+    background-color: var(--clay-surface);
+    color: var(--clay-ink);
+    box-shadow: var(--clay-shadow-input);
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+input::placeholder, textarea::placeholder { color: var(--clay-ink-muted); }
+input:focus, textarea:focus, select:focus {
+    border-color: var(--clay-blue) !important;
+    color: var(--clay-ink);
+    box-shadow: 0 0 0 4px rgba(122, 111, 240, 0.28) !important;
+}
+
+/* tags / pills / avatars */
+.tag, .task-tag, .task-board-category {
+    border-radius: 999px !important;
+    color: var(--clay-ink) !important;
+}
+.avatar-letter, .avatar { border-radius: 50%; }
+
+/* links + headings */
+a { color: var(--clay-blue); }
+a:hover { color: var(--clay-blue-deep); }
+.page-header h1, .page-header h2, h1, h2 {
+    color: var(--clay-ink);
+    letter-spacing: -0.02em;
+}
+
+/* ---------------------------------------------------------------------------
+   STRUCTURAL MODERNISATION — type scale, rhythm, breathing room
+   (mirrors Fizzy/Basecamp proportion: larger base type, tighter display
+   headings, generous whitespace, airy cards)
+---------------------------------------------------------------------------- */
+
+/* Base type: bump up the reading size and soften the density Kanboard ships. */
+body {
+    font-size: 16px;                  /* up from browser-default ~14-15px feel */
+    line-height: 1.6;
+}
+small { font-size: 0.82em; }
+
+/* Display headings: bolder, tighter leading, more presence. */
+h1 { font-size: 1.6em; }
+h2 { font-size: 1.3em; }
+h3 { font-size: 1.1em; }
+h1, h2, h3, h4 { letter-spacing: -0.025em; }
+
+/* Page shell: roomier horizontal gutters than the cramped 10px default. */
+.page {
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-top: 18px;                /* breathing room below the header */
+}
+.page-header { margin-bottom: 24px; }
+.page-header h2 { padding-bottom: 0; }
+
+/* Header: airier, vertically centered, less crowded than the 5px padding. */
+header {
+    padding: 12px 20px;
+}
+header h1 { font-size: 1.35em; }
+
+/* Cards: larger title, more internal space, legible metadata. */
+.task-board {
+    padding: 14px 16px;
+}
+.task-board-title {
+    font-size: 1.02em;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-top: 8px;
+    margin-bottom: 10px;
+}
+.task-board-title a { font-weight: 600; }
+.task-board-header {
+    line-height: 1.4;
+    margin-bottom: 2px;
+}
+.task-board-icons {
+    margin-top: 9px;
+    font-size: 0.88em;
+    line-height: 1.9;
+}
+.task-board-icons, .task-board-icons span { color: var(--clay-ink-soft); }
+
+/* Board drop-wells: a touch more separation so cards feel set into clay. */
+.board-task-list { padding: 12px; }
+
+/* Column drop shadow on the column header chip kept; widen the click target. */
+#board th.board-column-header .board-column-title {
+    padding: 7px 16px;
+    font-size: 0.98em;
+}
+
+/* Tables: roomier cells, softer line-height. */
+.table th, .table td, table.table th, table.table td { padding: 0.65em 0.75em; }
+
+/* Forms: labels get a touch of weight & spacing; inputs a bit taller. */
+label { font-weight: 500; margin-bottom: 3px; }
+input[type="text"], input[type="password"], input[type="email"],
+input[type="search"], textarea { padding: 8px 12px; }
+
+/* Comments: more breathing room, larger body text. */
+.comment { padding: 18px 20px; }
+.comment-content { font-size: 1em; line-height: 1.6; }
+
+/* Sidebar: roomier rows, slightly larger text. */
+.sidebar > ul li { line-height: 38px; padding-left: 16px; margin: 2px 0; }
+
+/* Buttons: bigger tap targets. */
+.btn, button[type="submit"] { padding: 7px 16px; font-size: 0.95em; }
+
+/* ---------------------------------------------------------------------------
+   MOBILE-FRIENDLY — touch-first, safe-gutters, scroll-snappy board
+   Breakpoints mirror Kanboard's own (768 stack, 560 views, 480 header) and
+   tighten them; the board keeps its fixed-column horizontal-scroll model,
+   which is the right pattern for kanban on a phone.
+---------------------------------------------------------------------------- */
+
+/* --- small phones / tight viewports (<=480px) --- */
+@media (max-width: 480px) {
+
+    /* Tighter page gutters; the clay cards carry the spacing. */
+    .page { margin-left: 12px; margin-right: 12px; padding-top: 12px; }
+    .page-header { margin-bottom: 16px; }
+    .page-header h2 { font-size: 1.15em; }
+
+    /* Header reorder: menu buttons first, title second, board switch last.
+       Kanboard already sends .menus -> order 1 and .title -> order 3; we
+       widen tap targets on the right-side controls. */
+    header { padding: 8px 12px; }
+    header .menus-container { gap: 10px; }
+    header .menus-container a,
+    header .menus-container .dropdown-submenu-open a { padding: 8px; min-height: 40px; min-width: 40px; display: inline-flex; align-items: center; }
+    .board-selector-container { min-width: 0 !important; width: 100%; }
+
+    /* Board: keep horizontal swipe, but make cards touch-tappable and less
+       cramped; add scroll snap so a swipe lands on a column. */
+    #board-container { -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity; }
+    #board th.board-column-header { width: 260px; }   /* slightly wider tap columns */
+    #board .board-column { scroll-snap-align: start; }
+    .task-board { padding: 14px 16px; margin-bottom: 10px; }
+    .task-board-title { font-size: 1.05em; }
+
+    /* Bigger touch targets on links/icons in tables & cards. */
+    .task-board a, .task-board-icons a,
+    table a, .dropdown-menu { min-height: 36px; display: inline-flex; align-items: center; }
+
+    /* Forms full-width, no horizontal squish. */
+    input[type="text"], input[type="password"], input[type="email"],
+    input[type="number"], input[type="search"], input[type="date"],
+    textarea, select { width: 100% !important; max-width: 100% !important; box-sizing: border-box; padding: 10px 12px; }
+
+    /* Buttons grow to at last 44px thumb height, block-ish for forms. */
+    .btn, button[type="submit"] { min-height: 44px; padding: 10px 18px; }
+    .form-actions .btn { display: inline-block; }
+
+    /* Comments stack cleanly; avatar sits above, body flows. */
+    .comment { margin-left: 0; padding: 16px; }
+    .comment-content, .comment-title { margin-left: 0; }
+    .comment .avatar, .comment .avatar-letter { float: none; display: block; margin-bottom: 8px; }
+}
+
+/* --- tablets / small laptops (<=768px) --- */
+@media (max-width: 768px) {
+
+    /* Sidebar already wraps to full width; give it roomier touch rows. */
+    .sidebar { min-width: 0; }
+    .sidebar > ul li { line-height: 40px; padding: 4px 14px; }
+
+    /* Airier page shell. */
+    .page { margin-left: 14px; margin-right: 14px; }
+
+    /* Two-column form columns go single on narrow screens. */
+    .task-form-container, .form-columns { flex-direction: column; }
+    .form-column { margin-right: 0 !important; }
+}
+
+/* --- safe-area insets on notched phones --- */
+@supports (padding: max(0px)) {
+    @media (max-width: 768px) {
+        header { padding-left: max(12px, env(safe-area-inset-left)); padding-right: max(12px, env(safe-area-inset-right)); }
+        .page { padding-left: max(12px, env(safe-area-inset-left)); padding-right: max(12px, env(safe-area-inset-right)); }
+    }
+}
+
+/* --- disable pointer-driven card hover lift on touch (avoids sticky hover) --- */
+@media (hover: none) {
+    .task-board:hover, .btn:hover { transform: none; }
+}

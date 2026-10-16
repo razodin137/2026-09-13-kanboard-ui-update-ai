@@ -1,2 +1,4 @@
 *
-!/.gitignore
+!KbAi/
+!KbAi/**
+!.gitignore

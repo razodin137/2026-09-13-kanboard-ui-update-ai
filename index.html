@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kanboard + KbAi — an AI-assisted Kanboard</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    max-width: 46rem;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    line-height: 1.65;
+  }
+  a { color: #0969da; }
+  @media (prefers-color-scheme: dark) { a { color: #4493f8; } }
+  pre {
+    background: #f6f8fa; border-radius: 6px; padding: 1rem;
+    overflow-x: auto; font-size: 0.875rem;
+  }
+  @media (prefers-color-scheme: dark) { pre { background: #151b23; } }
+  code { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; }
+  table { border-collapse: collapse; }
+  th, td { border: 1px solid #d0d7de; padding: 0.375rem 0.75rem; }
+  th { background: #f6f8fa; }
+  @media (prefers-color-scheme: dark) { th, td { border-color: #3d444d; } th { background: #151b23; } }
+  h1, h2 { border-bottom: 1px solid #d0d7de; padding-bottom: 0.3em; }
+  @media (prefers-color-scheme: dark) { h1, h2 { border-color: #3d444d; } }
+  blockquote { margin: 0; padding: 0 1em; color: #59636e; border-left: 0.25em solid #d0d7de; }
+  @media (prefers-color-scheme: dark) { blockquote { color: #9198a1; border-color: #3d444d; } }
+</style>
+</head>
+<body>
+<h1>Kanboard + KbAi — an AI-assisted Kanboard</h1>
+<p>A working copy of <a href="https://kanboard.org">Kanboard</a> (upstream: kanboard/kanboard) with two local additions that wire AI into the board:</p>
+<h2>KbAi plugin (plugins/KbAi/)</h2>
+<ul>
+<li>Adds a <strong>Bots</strong> settings page under Settings — one Ollama API key</li>
+</ul>
+<p>("one API key, many bots"), then create named bots, each with a model and a system prompt. Chat requests go to ollama.com's hosted API (Authorization: Bearer &lt;key&gt;) — no local Ollama install needed.</p>
+<ul>
+<li>@-mention a bot in a card comment and it replies in the comment thread.</li>
+<li>Ships <strong>fizzy.css</strong>, a Fizzy.do-inspired theme loaded after core CSS so</li>
+</ul>
+<p>:root overrides win.</p>
+<h2>AI bridge (ai-bridge.py + bridge.sh)</h2>
+<p>A local proof that watches Kanboard's SQLite DB for tasks being moved between columns. On a move it composes a stage-specific prompt from the card (the COLUMN_INSTRUCTIONS map makes each column's comment a different workflow — refine, conditions, first action, close-out), asks Ollama (any model it has), and inserts the reply as a card comment.</p>
+<p>./bridge.sh start    # watch + comment (log: data/ai-bridge.log) ./bridge.sh stop</p>
+<h2>Run the board</h2>
+<p>./run.sh     # http://127.0.0.1:8080  (login: admin / admin) ./stop.sh</p>
+<p>Requires PHP and SQLite; run.sh starts a dev server (reuses one already running on :8080). Kanboard is in upstream maintenance mode; this repo tracks a recent commit with the local additions layered on top.</p>
+<p>Also live at: https://razodin137.github.io/2026-09-13-kanboard-ui-update-ai/</p>
+</body>
+</html>
